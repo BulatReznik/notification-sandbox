@@ -1,7 +1,7 @@
 // src/api/notification.ts
 
 export const sendPushNotification = async (token: string, title: string, body: string) => {
-    const url = 'https://localhost:7171/api/v1/PushNotification/send';
+    const url = 'https://localhost:7171/api/v1/push-notifications/send';
     const data = {
       token: token,
       title: title,

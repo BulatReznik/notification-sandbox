@@ -16,8 +16,11 @@ export const messaging = getMessaging(app)
 
 export const getFirebaseToken = async (): Promise<string | null> => {
   try {
+    // Регистрируем сервис-воркер с атрибутом type="module", если используем модули
+    const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js', { type: 'module' });
     const token = await getToken(messaging, {
-      vapidKey: 'BESwo8Y1SpfOwVMyGMGDOoLNCnw96f7Gse0fHcS91-4ZBMsaYDRzzo2L-6c-DLkg_ypuPnRWLKJEDRQHuUjFNPU' // Замените на свой ключ VAPID
+      vapidKey: 'BLcmsBR_mEGQJ0IfARnpeVAopt0it9bRKyn4wZS9l7dNHaXC8Ei0dimRi0u2ffK0HcANHQBFIoFntzzDkzbBGdo',
+      serviceWorkerRegistration: registration
     })
     if (token) {
       console.log('Firebase token:', token)
@@ -38,7 +41,6 @@ export const setupFirebaseMessaging = (onMessageCallback: (payload: any) => void
     throw new Error('onMessageCallback must be a function')
   }
 
-  // Слушаем новые сообщения и передаем их в callback
   onMessage(messaging, (payload) => {
     console.log('Message received: ', payload)
     onMessageCallback(payload)
