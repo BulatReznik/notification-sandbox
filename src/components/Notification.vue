@@ -5,21 +5,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue'
-import { setupFirebaseMessaging } from '../firebase'
+import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
     setup() {
         const message = ref<string | null>(null)
-
-        // Настроим обработку сообщений Firebase
-        onMounted(() => {
-            // Убедимся, что передаем функцию как коллбек
-            setupFirebaseMessaging((payload) => {
-                message.value = payload.notification?.body || 'Новое уведомление'
-            })
-        })
-
         return {
             message
         }

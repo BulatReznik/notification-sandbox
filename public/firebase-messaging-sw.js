@@ -1,15 +1,27 @@
-import { onBackgroundMessage } from 'firebase/messaging/sw';
+import { initializeApp } from "firebase/app";
+import { getMessaging } from "firebase/messaging/sw";
 
-// Слушаем фоновое сообщение
-onBackgroundMessage(self, (payload) => {
-  console.log('Фоновое сообщение получено: ', payload);
+const firebaseApp = initializeApp({
+  apiKey: "AIzaSyDexofb-Kh-l-PTYnbHOcLKsXnCsEoWcV8",
+  authDomain: "push-sandbox-8f4c0.firebaseapp.com",
+  projectId: "push-sandbox-8f4c0",
+  storageBucket: "push-sandbox-8f4c0.firebasestorage.app",
+  messagingSenderId: "827152435346",
+  appId: "1:827152435346:web:67c68775016e2f55a0fe4b"
+});
 
-  const notificationTitle = payload.notification?.title || 'Новое уведомление';
+const messaging = getMessaging(firebaseApp);
+
+onBackgroundMessage(messaging, (payload) => {
+  console.log('[firebase-messaging-sw.js] Received background message ', payload);
+
+  const notificationTitle = 'Background Message Title';
   const notificationOptions = {
-    body: payload.notification?.body,
-    icon: payload.notification?.icon || '/firebase-logo.png',
+    body: payload.body,
+    title: payload.title,
+    icon: '/firebase-logo.png'
   };
 
-  // Показываем уведомление
-  self.registration.showNotification(notificationTitle, notificationOptions);
+  self.registration.showNotification(notificationTitle,
+    notificationOptions);
 });
