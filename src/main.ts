@@ -16,3 +16,14 @@ app.use(createPinia())
 app.use(router)
 
 app.mount('#app')
+
+// Регистрация сервис-воркера как модуля
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/firebase-messaging-sw.js', { type: 'module' })
+      .then((registration) => {
+          console.log('Service Worker зарегистрирован:', registration);
+      })
+      .catch((error) => {
+          console.error('Ошибка при регистрации Service Worker:', error);
+      });
+}
