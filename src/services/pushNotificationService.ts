@@ -18,12 +18,8 @@ const messaging = getMessaging(firebaseApp)
 
 export const getFirebaseToken = async (): Promise<string | null> => {
     try {
-        console.log(messaging)
-
-        //const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js', { type: 'module' })
         const token = await getToken(messaging, {
-            vapidKey: 'BEPSckFJxOW0dJsdG8UOvelL6C7Lj7gePfGaUBkTK_66ojHyhLTTuyVLs9_LepjSTHLum1akxS8X8eqGWA6PI-s',
-            //serviceWorkerRegistration: registration
+            vapidKey: 'BCS_iapcq5OAL7fBhVy5sGVhI2_vWgQHPEgD5d6Qxcuxlmwf8p9YAwrVZ-GCGsi1lOyT675jetF37DfKW-cxqT8',
         })
 
         if (token) {
