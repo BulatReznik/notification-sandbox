@@ -8,16 +8,26 @@
 import { defineComponent, ref } from 'vue'
 import { getFirebaseToken } from '../services/pushNotificationService'
 import { subscribeToPushNotifications } from '../api/subscribe'
-export default defineComponent({
-    setup() {
-        const isSubscribed = ref(false)
 
+export default defineComponent({
+    props: {
+        isSubscribed: {
+            type: Boolean,
+            default: false
+        },
+        updateSubscriptionStatus: {
+            type: Function,
+            required: true
+        }
+    },
+    setup(props) {
         const subscribeToNotifications = async () => {
             const token = await getFirebaseToken()
             if (token) {
                 try {
                     await subscribeToPushNotifications(token)
-                    isSubscribed.value = true
+                    // Обновляем родительский компонент через событие
+                    props.updateSubscriptionStatus(true)
                     console.log('✅ Подписка на уведомления успешна, токен:', token)
                 } catch (error) {
                     console.error('❌ Ошибка при подписке на уведомления:', error)

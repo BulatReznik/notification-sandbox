@@ -11,8 +11,13 @@ import { defineComponent, ref } from 'vue'
 import { listenForMessages } from '../services/pushNotificationService'
 
 export default defineComponent({
+    props: {
+        isSubscribed: {
+            type: Boolean,
+            default: false
+        }
+    },
     setup() {
-        const isSubscribed = ref(false)  // Флаг подписки
         const message = ref<string | null>(null)
 
         // Подключаем слушатель для входящих сообщений
@@ -21,7 +26,6 @@ export default defineComponent({
         })
 
         return {
-            isSubscribed,
             message
         }
     }

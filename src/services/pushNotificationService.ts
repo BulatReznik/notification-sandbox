@@ -12,8 +12,6 @@ const firebaseApp = initializeApp({
     appId: "1:827152435346:web:67c68775016e2f55a0fe4b"
 })
 
-console.log('12351252315215213')
-
 const messaging = getMessaging(firebaseApp)
 
 export const getFirebaseToken = async (): Promise<string | null> => {

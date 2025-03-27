@@ -4,8 +4,8 @@
 
     <div>
       <h1>Vue 3 Приложение с уведомлениями</h1>
-      <NotificationButton />
-      <Notification />
+      <NotificationButton :isSubscribed="isSubscribed" :updateSubscriptionStatus="updateSubscriptionStatus" />
+      <Notification :isSubscribed="isSubscribed" />
     </div>
   </header>
 </template>
@@ -13,6 +13,14 @@
 <script setup lang="ts">
 import NotificationButton from './components/NotificationButton.vue'
 import Notification from './components/Notification.vue'
+import { ref } from 'vue'
+
+const isSubscribed = ref(false)
+
+const updateSubscriptionStatus = (status: boolean) => {
+  isSubscribed.value = status
+}
+
 </script>
 
 <style scoped>
