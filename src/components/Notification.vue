@@ -1,34 +1,25 @@
 <template>
     <div class="notification">
-        <p v-if="isSubscribed">Вы подписаны на уведомления!</p>
-        <p v-else>Вы не подписаны на уведомления.</p>
+        <p style="color: green;" v-if="props.isSubscribed">Вы подписаны на уведомления!</p>
+        <p style="color: red;" v-if="!props.isSubscribed">Вы не подписаны на уведомления.</p>
         <p v-if="message">Новое уведомление: {{ message }}</p>
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
+<script setup lang="ts">
+import { ref } from 'vue'
 import { listenForMessages } from '../services/pushNotificationService'
 
-export default defineComponent({
-    props: {
-        isSubscribed: {
-            type: Boolean,
-            default: false
-        }
-    },
-    setup() {
-        const message = ref<string | null>(null)
+// Пропс для подписки
+const props = defineProps<{
+    isSubscribed: boolean
+}>()
 
-        // Подключаем слушатель для входящих сообщений
-        listenForMessages((payload) => {
-            message.value = payload.notification?.title || 'Новое сообщение'
-        })
+const message = ref<string | null>(null)
 
-        return {
-            message
-        }
-    }
+// Подключаем слушатель для входящих сообщений
+listenForMessages((payload) => {
+    message.value = payload.notification?.title || 'Новое сообщение'
 })
 </script>
 

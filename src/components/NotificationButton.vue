@@ -4,44 +4,32 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
+<script setup lang="ts">
 import { getFirebaseToken } from '../services/pushNotificationService'
 import { subscribeToPushNotifications } from '../api/subscribe'
 
-export default defineComponent({
-    props: {
-        isSubscribed: {
-            type: Boolean,
-            default: false
-        },
-        updateSubscriptionStatus: {
-            type: Function,
-            required: true
-        }
-    },
-    setup(props) {
-        const subscribeToNotifications = async () => {
-            const token = await getFirebaseToken()
-            if (token) {
-                try {
-                    await subscribeToPushNotifications(token)
-                    // Обновляем родительский компонент через событие
-                    props.updateSubscriptionStatus(true)
-                    console.log('✅ Подписка на уведомления успешна, токен:', token)
-                } catch (error) {
-                    console.error('❌ Ошибка при подписке на уведомления:', error)
-                }
-            } else {
-                console.error('❌ Не удалось получить токен для уведомлений.')
-            }
-        }
+// Пропсы
+const props = defineProps<{
+    isSubscribed: boolean
+    updateSubscriptionStatus: (status: boolean) => void
+}>()
 
-        return {
-            subscribeToNotifications
+// Логика подписки
+const subscribeToNotifications = async () => {
+    const token = await getFirebaseToken()
+    if (token) {
+        try {
+            await subscribeToPushNotifications(token)
+            // Обновляем родительский компонент через пропс
+            props.updateSubscriptionStatus(true)
+            console.log('✅ Подписка на уведомления успешна, токен:', token)
+        } catch (error) {
+            console.error('❌ Ошибка при подписке на уведомления:', error)
         }
+    } else {
+        console.error('❌ Не удалось получить токен для уведомлений.')
     }
-})
+}
 </script>
 
 <style scoped>
